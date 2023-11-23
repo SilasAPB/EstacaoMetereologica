@@ -66,6 +66,7 @@ void loop() {
     lcd.setCursor(0,0);
     lcd.print("Umidade: ");
     lcd.setCursor(0,1);
+    umid = 1.0516 * umid - 2.6550; //calibração da umidade
     lcd.print(umid); 
     delay(2000);
 
