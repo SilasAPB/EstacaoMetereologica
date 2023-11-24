@@ -74,7 +74,6 @@ void loop() {
     RLDR = Vout/(3.3 - Vout)*50000;
     lum = pow(10,-1.03*log10(RLDR) + 6.05);
 
-    Serial.println(lum);
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Temperatura(");
@@ -83,7 +82,7 @@ void loop() {
     lcd.setCursor(13,0);
     lcd.print("C): ");
     lcd.setCursor(0,1);
-    temp = 1.0017 * temp - 1.2719; //temperatura calibrada
+    temp = 1.0043 * temp - 1.3262; //temperatura calibrada
     lcd.print(temp,2);
     delay(2000);
 
@@ -118,7 +117,7 @@ void loop() {
     Serial.println(lum);
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Luminos. (Lx): "); 
+    lcd.print("Ilumin. (lx): "); 
     lcd.setCursor(0,1);
     lcd.print(lum); 
     delay(2000);
