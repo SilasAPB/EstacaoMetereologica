@@ -4,6 +4,7 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 
+
 DHT dht(3, DHT22);
 
 Adafruit_BMP280 bmp; //OBJETO DO TIPO Adafruit_BMP280 (I2C)
@@ -17,6 +18,17 @@ float Vout, RLDR, lum;//luminosidade
 
 LiquidCrystal_I2C lcd(0x27,16,2);
 
+byte degreeSymbol[8] = {
+  0b00110,
+  0b01001,
+  0b01001,
+  0b00110,
+  0b00000,
+  0b00000,
+  0b00000,
+  0b00000
+};
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -26,6 +38,21 @@ void setup() {
   dht.begin();
   analogReference(INTERNAL); // Conversao A/D com fundo de escala de 1.1V
   // lcd.setCursor(coluna,linha);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Instrumentacao");
+  lcd.setCursor(0,1);
+  lcd.print("e Medicao");
+  delay(3000);
+  lcd.clear();
+
+  lcd.setCursor(0,0);
+  lcd.print("Instrumestres");
+  lcd.setCursor(0,1);
+  lcd.print("Lara,Yondu,Silas");
+  delay(3000);
+  
+  lcd.createChar(0, degreeSymbol);
 }
 
 void loop() {
@@ -47,40 +74,50 @@ void loop() {
     RLDR = Vout/(3.3 - Vout)*50000;
     lum = pow(10,-1.03*log10(RLDR) + 6.05);
 
+    Serial.println(lum);
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Temperatura(°c): "); 
+    lcd.print("Temperatura(");
+    lcd.setCursor(12,0);
+    lcd.write(lcd.write(byte(0)));
+    lcd.setCursor(13,0);
+    lcd.print("C): ");
     lcd.setCursor(0,1);
+    temp = 1.0017 * temp - 1.2719; //temperatura calibrada
     lcd.print(temp,2);
     delay(2000);
 
+
+    Serial.println(pressao);
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Pressao: "); 
+    lcd.print("Pressao (Pa): "); 
     lcd.setCursor(0,1);
     lcd.print(pressao);
     delay(2000);
 
-
+    Serial.println(umid);
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Umidade: ");
+    lcd.print("Umidade (%): ");
     lcd.setCursor(0,1);
     lcd.print(umid); 
     delay(2000);
 
 
+    Serial.println(alt);
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Altitude aprox.: "); 
+    lcd.print("Altitude (m): "); 
     lcd.setCursor(0,1);
     lcd.print(alt); 
     delay(2000);
 
     
+    Serial.println(lum);
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Luminosidade: "); 
+    lcd.print("Luminos. (Lx): "); 
     lcd.setCursor(0,1);
     lcd.print(lum); 
     delay(2000);
